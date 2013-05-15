@@ -299,6 +299,7 @@ function wrap(nodule, name, wrapper) {
         <pre><code class="javascript">
 var logger = require('logger');
 function wrap(nodule, name, wrapper) {
+  logger.debug("Attempting to wrap %s.%s", nodule, name);
   if (!nodule || !nodule[name]) {
     logger.warn("no function to wrap provided");
     return;
