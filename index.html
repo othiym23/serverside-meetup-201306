@@ -266,16 +266,109 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
     </section>
 
     <section>
-      <h2>Monkeypatch safely</h2>
+      <section>
+        <h1>Monkeypatching</h1>
 
-      <ul>
-        <li>fail via early return rather than throwing</li>
-        <li>wrap and unwrap idempotently</li>
-        <li>log everything</li>
-        <li>don't assume you're the only monkeypatcher</li>
-        <li>leave visible traces</li>
-        <li>always return the results of wrapped calls</li>
-      </ul>
+        <pre><code class="javascript">
+var http = require('http');
+var _request = http.request;
+http.request = function () {
+  console.log("requestin'");
+  return _request.apply(this, arguments);
+};
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Monkeypatch safely</h2>
+
+        <p>Fail via early return rather than throwing:</p>
+        <pre><code class="javascript">
+function wrap(nodule, name, wrapper) {
+  if (!nodule || !nodule[name]) return;
+  if (!wrapper) return original;
+  // other stuff
+}
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Monkeypatch safely</h2>
+
+        <p>Log everything:</p>
+        <pre><code class="javascript">
+var logger = require('logger');
+function wrap(nodule, name, wrapper) {
+  if (!nodule || !nodule[name]) {
+    logger.warn("no function to wrap provided");
+    return;
+  }
+  if (!wrapper) {
+    logger.warn("no wrapper function provided");
+    return original;
+  }
+  // other stuff
+}
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Monkeypatch safely</h2>
+
+        <p>Leave visible traces:</p>
+        <pre><code class="javascript">
+function wrap(nodule, name, wrapper) {
+  // setup
+  var wrapped = wrapper(nodule[name]);
+  wrapped.__WRAPPED = "yo dawg";
+
+  nodule[name] = wrapped;
+}
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Monkeypatch safely</h2>
+
+        <p>Wrap and unwrap idempotently:</p>
+        <pre><code class="javascript">
+function wrap(nodule, name, wrapper) {
+  // other setup
+  if (nodule[name].__WRAPPED) return;
+
+  var wrapped = wrapper(nodule[name]);
+  wrapped.__WRAPPED = "yo dawg";
+  wrapped.__UNWRAP = function () {
+    nodule[name] = original;
+  };
+
+  nodule[name] = wrapped;
+}
+
+function unwrap(method) {
+  if (method.__UNWRAP) method.__UNWRAP();
+}
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Monkeypatch safely</h2>
+
+        <p>Always return the results of wrapped calls:</p>
+        <pre><code class="javascript">
+function wrapper(original) {
+  return function () {
+    console.log("yo dawg: before");
+
+    var returned = original.apply(this, arguments); // XXX
+
+    console.log("yo dawg: the dawggening");
+
+    return returned;
+  };
+}
+        </code></pre>
+      </section>
     </section>
 
     <section>
