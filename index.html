@@ -38,118 +38,28 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
   <div class="slides">
 
     <section>
-      <h1>Do as I say, not as I do.</h1>
+      <h1>Do as I say, not as I do</h1>
       <h3>Lessons learned from a year of trial by fire</h3>
       <p><small><a href="http://twitter.com/othiym23">Forrest L Norvell</a>, <a href="http://newrelic.com">New Relic</a></small></p>
       <p><a href="http://is.gd/nodepdx2013">http://is.gd/nodepdx2013</a></p>
     </section>
 
     <section>
-      <section>
-        <h1>Who</h1>
+      <h2>Who / What / Why</h2>
 
-        <ul>
-          <li>Writing Node.js for a living for two years.</li>
-          <li>Working on Node.js support for New Relic for a year.</li>
-        </ul>
-      </section>
+      <ul>
+        <li>2 years writing Node.js for a living.</li>
+        <li>1 year writing Node.js for New Relic.</li>
+      </ul>
 
-      <section>
-        <h1>What</h1>
+      <p class="fragment"><br/>New Relic's job is not to tell you how to write your code.
+      Our job is to give you the tools you need to figure out how to improve
+      your code yourself.</p>
 
-        <ul>
-          <li>Instrument popular modules (Express, MongoDB, MySQL)</li>
-          <li>Trace execution flow</li>
-          <li>Capture information about errors</li>
-        </ul>
+      <p>&nbsp;</p>
 
-        <p><br/>My job is not to tell you how to write your code. My job is to give
-        you the tools you need to figure out how to improve your code yourself.</p>
-      </section>
-
-      <section>
-        <h1>Why</h1>
-
-        <p>This talk is a mixture of practical advice and naked self-interest:
-        if everyone followed these guidelines, my job would be much easier.</p>
-      </section>
-    </section>
-
-    <section>
-      <section>
-        <h1>THE PROBLEM:</h1>
-        <h3>JavaScript is not a pure language.</h3>
-
-        <ul>
-          <li>It is <i>possible</i> to use fundamental functional programming
-          techniques in JavaScript.</li>
-          <li>It is <i>possible</i> to use inheritance and simulate classes in
-          JavaScript.</li>
-          <li>This doesn't make it a good idea.</li>
-        </ul>
-
-        <aside class="notes">
-          1. monads and lenses
-          2. CoffeeScript provides a simulation of classes as transpiled sugar.
-        </aside>
-      </section>
-
-      <section>
-        <h1>THE PROBLEM, cont'd:</h1>
-        <ul>
-          <li>JavaScript, being dynamic, has no type system.</li>
-          <li>Using complex abstractions in a team requires a high degree of
-          consensus and coordination.</li>
-          <li>In JavaScript, clarity and effectiveness are always in tension.</li>
-        </ul>
-
-        <aside class="notes">
-          1. if you're using abstractions like monads, you're responsible for
-             keeping the rules for how they're used in your head.
-          2. One of the primary jobs of a static type system is to help the
-             compiler keep you out of trouble.
-          3. JavaScript tooling for dealing with the combination of anonymous
-             functions and mutation is not what it could be.
-          4. Even Crockford doesn't deal with JavaScript's dual nature
-        </aside>
-      </section>
-    </section>
-
-    <section>
-      <section>
-        <h2>Writing tooling is its own special challenge</h2>
-
-        <ul>
-          <li>Absolutely can't break anything.</li>
-          <li>Almost as importantly, can't <i>change</i> anything.</li>
-          <li>Needs to be as simple as possible without compromising performance.</li>
-          <li>Lots of great tools and modules that app developers can use aren't available
-          to developers writing instrumentation.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>OO vs FP, Mutation vs Closures: FIGHT!</h2>
-
-        <ul>
-          <li>Closures can prevent JIT optimization.</li>
-          <li>Side effects limit the kinds of guarantees you can make.</li>
-          <li>Functional techniques that depend on purity are hard to make work transparently
-          with mutation-heavy code.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Prerequisites for Working with Node core</h2>
-
-        <ul>
-          <li>Learn how V8 works: <a href="http://mrale.ph/">mrale.ph</a>
-          and <a href="http://wingolog.org">wingolog.org</a> are your guides.</li>
-          <li>Learn to use <code>node debug</code> or <code>node-inspector</code>.
-          <li>Spend some time with <code>src/node.js</code>, <code>src/node.cc</code>,
-          and <code>lib/*</code>.
-        </ul>
-      </section>
+      <p class="fragment">This talk is a mixture of practical advice and naked self-interest:
+      if everyone followed these guidelines, my job would be much easier.</p>
     </section>
 
     <section>
@@ -224,9 +134,93 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
     </section>
 
     <section>
-      <h1>...</h1>
+      <h2>...wh- what?</h2>
+    </section>
 
-      <p>It should be pretty clear you can't do all of this at the same time.</p>
+    <section>
+      <section>
+        <h1>THE PROBLEM:</h1>
+        <h3>JavaScript is not a pure language.</h3>
+
+        <ul>
+          <li>It is <i>possible</i> to use fundamental functional programming
+          techniques in JavaScript.</li>
+          <li>It is <i>possible</i> to use inheritance and simulate classes in
+          JavaScript.</li>
+          <li>This doesn't mean either is a good idea.</li>
+        </ul>
+
+        <aside class="notes">
+          1. monads and lenses
+          2. CoffeeScript provides a simulation of classes as transpiled sugar.
+        </aside>
+      </section>
+
+      <section>
+        <h2>OO vs FP, Mutation vs Closures: FIGHT!</h2>
+
+        <ul>
+          <li>Closures can prevent JIT optimization.</li>
+          <li>Functional techniques that depend on purity are hard to make work transparently
+          with mutation-heavy code.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h1>THE PROBLEM, cont'd:</h1>
+        <ul>
+          <li>JavaScript, being dynamic, has no type system.</li>
+          <li>Cleverness impairs collaboration.</li>
+          <li>In JavaScript, clarity and effectiveness are always in tension.</li>
+        </ul>
+
+        <aside class="notes">
+          1. if you're using abstractions like monads, you're responsible for
+             keeping the rules for how they're used in your head.
+          2. One of the primary jobs of a static type system is to help the
+             compiler keep you out of trouble.
+          3. JavaScript tooling for dealing with the combination of anonymous
+             functions and mutation is not what it could be.
+          4. Even Crockford doesn't deal with JavaScript's dual nature
+        </aside>
+      </section>
+
+      <section>
+        <h1>THE PROBLEM: COMPLEXITY IS YOUR ENEMY</h1>
+      </section>
+
+      <aside class="notes">
+        JavaScript's mongrel pedigree fosters complexity and cleverness to deal with
+        the hard tradeoffs it imposes. Keep it simple.
+      </aside>
+    </section>
+
+    <section>
+      <section>
+        <h2>Writing tooling is a special challenge</h2>
+
+        <ul>
+          <li>Absolutely can't break anything.</li>
+          <li>Almost as importantly, can't <i>change</i> anything.</li>
+          <li>Needs to be as simple as possible without compromising performance.</li>
+          <li>Lots of great tools and modules that app developers can use aren't available
+          to developers writing instrumentation.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Prerequisites for Working with Node core</h2>
+
+        <ul>
+          <li>Learn how V8 works: <a href="http://mrale.ph/">mrale.ph</a>
+          and <a href="http://wingolog.org">wingolog.org</a> are your guides.</li>
+          <li>Learn to use <code>node debug</code> or <code>node-inspector</code>.
+          <li>Spend some time with <code>src/node.js</code>, <code>src/node.cc</code>,
+          and <code>lib/*</code>.
+          <li><i>Don't</i> use Node's source as a model. Tuned for performance, not for
+          simplicity.</li>
+        </ul>
+      </section>
     </section>
 
     <section>
@@ -269,7 +263,7 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
       <section>
         <h1>Monkeypatching</h1>
 
-        <pre><code class="javascript">
+        <pre><code class="javascript" data-trim>
 var http = require('http');
 var _request = http.request;
 http.request = function () {
@@ -283,10 +277,9 @@ http.request = function () {
         <h2>Monkeypatch safely</h2>
 
         <p>Fail via early return rather than throwing:</p>
-        <pre><code class="javascript">
+        <pre><code class="javascript" data-trim>
 function wrap(nodule, name, wrapper) {
-  if (!nodule || !nodule[name]) return;
-  if (!wrapper) return original;
+  if (!nodule || !nodule[name] || !wrapper) return;
   // other stuff
 }
         </code></pre>
@@ -296,7 +289,7 @@ function wrap(nodule, name, wrapper) {
         <h2>Monkeypatch safely</h2>
 
         <p>Log everything:</p>
-        <pre><code class="javascript">
+        <pre><code class="javascript" data-trim>
 var logger = require('logger');
 function wrap(nodule, name, wrapper) {
   logger.debug("Attempting to wrap %s.%s", nodule, name);
@@ -306,7 +299,7 @@ function wrap(nodule, name, wrapper) {
   }
   if (!wrapper) {
     logger.warn("no wrapper function provided");
-    return original;
+    return;
   }
   // other stuff
 }
@@ -317,7 +310,7 @@ function wrap(nodule, name, wrapper) {
         <h2>Monkeypatch safely</h2>
 
         <p>Leave visible traces:</p>
-        <pre><code class="javascript">
+        <pre><code class="javascript" data-trim>
 function wrap(nodule, name, wrapper) {
   // setup
   var wrapped = wrapper(nodule[name]);
@@ -332,12 +325,13 @@ function wrap(nodule, name, wrapper) {
         <h2>Monkeypatch safely</h2>
 
         <p>Wrap and unwrap idempotently:</p>
-        <pre><code class="javascript">
+        <pre><code class="javascript" data-trim>
 function wrap(nodule, name, wrapper) {
   // other setup
   if (nodule[name].__WRAPPED) return;
+  var original = nodule[name];
 
-  var wrapped = wrapper(nodule[name]);
+  var wrapped = wrapper(original);
   wrapped.__WRAPPED = "yo dawg";
   wrapped.__UNWRAP = function () {
     nodule[name] = original;
@@ -356,7 +350,7 @@ function unwrap(method) {
         <h2>Monkeypatch safely</h2>
 
         <p>Always return the results of wrapped calls:</p>
-        <pre><code class="javascript">
+        <pre><code class="javascript" data-trim>
 function wrapper(original) {
   return function () {
     console.log("yo dawg: before");
@@ -374,7 +368,7 @@ function wrapper(original) {
 
     <section>
       <section>
-        <h2>Don't try to metaprogram in JavaScript</h2>
+        <h2>Keep it simple: Don't try to metaprogram in JavaScript</h2>
 
         <ul>
           <li>Magic is bad.</li>
@@ -390,7 +384,7 @@ function wrapper(original) {
         <h2>How not to metaprogram in JavaScript</h2>
 
         <ul>
-          <li>Don't control flow on function arity.</li>
+          <li>Don't control flow via function arity.</li>
           <li><code>Object.defineProperty()</code> and friends can be
           confusing and slow.</li>
           <li>Leave req and res alone: prefer composition to extension.</li>
@@ -407,7 +401,7 @@ function wrapper(original) {
     </section>
 
     <section>
-      <h2>Use ONE strategy for control flow</h2>
+      <h2>Keep it simple: Use ONE strategy for control flow</h2>
 
       <p>raw events / streams, <code>async</code>, a promises library, TameJS,
       <code>streamline</code>, fibers, monads, <code>reducers</code>, Iced
@@ -432,7 +426,7 @@ function wrapper(original) {
       </section>
 
       <section>
-        <h2>handle errors one way</h2>
+        <h2>keep it simple: handle errors one way</h2>
 
         <ul>
           <li>when in doubt, use domains</li>
@@ -454,6 +448,23 @@ function wrapper(original) {
         * for better or worse, it's the one language all Node developers share in common
         * makes it easier to accept contributions and collaborate
       </aside>
+    </section>
+
+    <section>
+      <h3>In conclusion</h3>
+
+      <p>Keep it simple, keep it safe.</p>
+      <p>&nbsp;</p>
+      <img width=476
+           height=142
+           src="http://25.media.tumblr.com/tumblr_m87bsc0tU61r9onvzo2_r1_500.gif"
+           alt="Gandalf says keep it safe"/>
+      <p>&nbsp;</p>
+      <p><a href="http://is.gd/domainion">http://is.gd/domainion</a></p>
+      <p><a href="http://twitter.com/othiym23">http://twitter.com/othiym23</a></p>
+      <p><a href="http://npmjs.org/package/newrelic">http://npmjs.org/package/newrelic</a></p>
+      <p><a href="http://newrelic.com/">http://newrelic.com/</a> <small>(we're <a href="https://newrelic.com/about/jobs">hiring</a>)</small></p>
+      <p><a href="http://is.gd/nodepdx2013">http://is.gd/nodepdx2013</a></p>
     </section>
   </div>
 </div>
