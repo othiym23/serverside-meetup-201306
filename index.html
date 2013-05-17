@@ -47,10 +47,9 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
     <section>
       <h2>Who / What / Why</h2>
 
-      <ul>
-        <li>2 years writing Node.js for a living.</li>
-        <li>1 year writing Node.js for New Relic.</li>
-      </ul>
+      <p>Spent the last year writing a language agent for New Relic in Node.js</p>
+
+      <p>&nbsp;</p>
 
       <p class="fragment"><br/>New Relic's job is not to tell you how to write your code.
       Our job is to give you the tools you need to figure out how to improve
@@ -160,16 +159,18 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
         <h2>OO vs FP, Mutation vs Closures: FIGHT!</h2>
 
         <ul>
+          <li>OO is based on encapsulation of state via <i>mutation</i>.</li>
+          <li>FP is based on the <i>flow of data</i> without mutation.</li>
           <li>Closures can prevent JIT optimization.</li>
-          <li>Functional techniques that depend on purity are hard to make work transparently
-          with mutation-heavy code.</li>
+          <li>Functional techniques that depend on purity don't get along
+          with mutation.</li>
         </ul>
       </section>
 
       <section>
         <h1>THE PROBLEM, cont'd:</h1>
         <ul>
-          <li>JavaScript, being dynamic, has no type system.</li>
+          <li>JavaScript, being dynamic, has no type system safety net.</li>
           <li>Cleverness impairs collaboration.</li>
           <li>In JavaScript, clarity and effectiveness are always in tension.</li>
         </ul>
