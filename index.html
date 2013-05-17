@@ -137,6 +137,11 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
     </section>
 
     <section>
+      <h1>THE GOAL:</h1>
+      <h3>Write tools for other developers.</h3>
+    </section>
+
+    <section>
       <section>
         <h1>THE PROBLEM:</h1>
         <h3>JavaScript is not a pure language.</h3>
@@ -384,10 +389,10 @@ function wrapper(original) {
         <h2>How not to metaprogram in JavaScript</h2>
 
         <ul>
-          <li>Don't control flow via function arity.</li>
+          <li>Leave req and res alone: prefer composition to extension.</li>
           <li><code>Object.defineProperty()</code> and friends can be
           confusing and slow.</li>
-          <li>Leave req and res alone: prefer composition to extension.</li>
+          <li>Don't control flow via function arity.</li>
         </ul>
 
         <aside class="notes">
