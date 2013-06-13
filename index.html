@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>Working close to the core.</title>
+<title>Working close to the metal.</title>
 
 <meta name="description" content="How to write Node tools that won't break in a month.">
 <meta name="author" content="Forrest Lehwalder Norvell">
@@ -38,28 +38,29 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
   <div class="slides">
 
     <section>
-      <h1>Working close to the core</h1>
-      <h3>solve bigger problems with Node.js</h3>
+      <h1>Working close to the metal</h1>
+      <h3>writing durable code with Node.js</h3>
       <p><small><a href="http://twitter.com/othiym23">Forrest L Norvell</a> (tw / gh: othiym23),
         <a href="http://newrelic.com">New Relic</a></small></p>
-      <p><a href="http://is.gd/nodepdx2013">http://is.gd/nodepdx2013</a></p>
+      <p><a href="http://is.gd/serverside_2013_06">http://is.gd/serverside_2013_06</a></p>
     </section>
 
     <section>
       <h2>Who / What / Why</h2>
 
-      <p>Spent the last year writing a language agent for New Relic in Node.js</p>
+      <p>Spent the last year writing a Node.js language agent for New Relic.</p>
 
       <p>&nbsp;</p>
 
-      <p class="fragment"><br/>New Relic's job is not to tell you how to write your code.
-      Our job is to give you the tools you need to figure out how to improve
-      your code yourself.</p>
+      <p class="fragment"><br/>New Relic's job is not to tell you how to write
+      your code.  Our job is to give you the tools you need to figure out how
+      to improve your code yourself.</p>
 
       <p>&nbsp;</p>
 
-      <p class="fragment">Working with Node on its level is hard but fun. Let me help make
-      it easier for you.</p>
+      <p class="fragment">You gotta be crafty to write fast, maintainable
+      server-side JavaScript. Getting good at it is more a matter of attitude
+      than specific techniques, but here's some of both.</p>
     </section>
 
     <section>
@@ -78,17 +79,20 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
       </section>
 
       <section>
-        <h1>COMPLEXITY:</h1>
-        <h3>JavaScript is neither FP nor OO.</h3>
+        <h2>COMPLEXITY:</h2>
+        <h3>JavaScript is neither FP nor OO. It's kind of both.</h3>
 
         <ul>
-          <li>It's kind of both:</li>
           <li>It is <i>possible</i> to use fundamental functional programming
           techniques in JavaScript.</li>
           <li>It is <i>possible</i> to use inheritance and simulate classes in
           JavaScript.</li>
-          <li>In JavaScript, clarity and effectiveness are always in tension.</li>
+          <li>It's often <i>better</i> to write imperative, procedural code.
         </ul>
+
+        <p>&nbsp;</p>
+
+        <p><i>In JavaScript, clarity and effectiveness are always in tension.</i></p>
 
         <aside class="notes">
           1. monads and lenses
@@ -97,18 +101,21 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
       </section>
 
       <section>
-        <h1>COMPLEXITY:</h1>
-        <h3>V8 is neither an interpreter nor a compiler</h3>
+        <h2>COMPLEXITY:</h2>
+        <h3>V8 is neither an interpreter nor a compiler. It's kind of both.</h3>
 
         <ul>
           <li>JavaScript, being dynamic, has no type system safety net.</li>
           <li>Closures can prevent JIT optimization.</li>
+          <li><a href="http://mrale.ph/">Slava Egorov</a> (http://mrale.ph) and
+          <a href="http://wingolog.org">Andy Wingo</a> (http://wingolog.org) can
+          demystify the black box that is V8's JIT.</li>
         </ul>
       </section>
 
       <section>
-        <h1>COMPLEXITY:</h1>
-        <h2>Writing tooling is a special challenge</h2>
+        <h2>COMPLEXITY:</h2>
+        <h3>Writing tooling is a special challenge</h3>
 
         <ul>
           <li>Absolutely can't break anything.</li>
@@ -116,20 +123,6 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
           <li>Needs to be as simple as possible without compromising performance.</li>
           <li>Lots of great tools and modules that app developers can use aren't available
           to developers writing instrumentation.</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2>Prerequisites for Working with Node core</h2>
-
-        <ul>
-          <li>Learn how V8 works: <a href="http://mrale.ph/">mrale.ph</a>
-          and <a href="http://wingolog.org">wingolog.org</a> are your guides.</li>
-          <li>Learn to use <code>node debug</code> or <code>node-inspector</code>.
-          <li>Spend some time with <code>src/node.js</code>, <code>src/node.cc</code>,
-          and <code>lib/*</code>.
-          <li><i>Don't</i> use Node's source as a model. Tuned for performance, not for
-          simplicity.</li>
         </ul>
       </section>
     </section>
@@ -158,19 +151,38 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
         <h2>digging down:</h2>
         <h3>think less, measure more</h3>
 
+        <pre><code class="javascript" data-trim>
+function verify(input, nonce) {
+  var hashed = new Hash('sha256').update(input).update(nonce).digest('hex');
+  if (hashed.substr(62, 2) === '00') return hashed;
+}
+        </code></pre>
+
         <ul>
-          <li>Testing and benchmarking framework included with Node's source.</li>
+          <li>Don't measure abstractions: measure for <i>your</i> problem under <i>your</i> workload.</li>
+          <li>Node's source includes a pretty good framework for benchmarking.</li>
         </ul>
       </section>
 
       <section>
         <h2>digging down:</h2>
         <h3>refer to the source</h3>
+
+        <ul>
+          <li>Spend some time with <code>src/node.js</code>, <code>src/node.cc</code>, and <code>lib/*</code>.
+          <li><i>Don't</i> use Node's source as a model. Tuned for performance, not for simplicity.</li>
+        </ul>
       </section>
 
       <section>
         <h2>digging down:</h2>
         <h3>node debug vs console.log()</h3>
+
+        <ul>
+          <li><code>node debug</code> or <code>node-inspector</code></li>
+          <li><code>node debug</code> is harder to learn but faster to use.</li>
+          <li><code>kill -USR1 &lt;pid&gt; &amp;&amp; node debug localhost:5858</code></li>
+        </ul>
       </section>
     </section>
 
@@ -191,44 +203,28 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
         <h3>use the whole ES5 toolbox</h3>
 
         <ul>
-          <li><code>'use strict';</code></li>
-          <li>jshint</li>
-          <li><code>forEach</code>, <code>map</code>, and <code>reduce</code>
-          are built into Array.</li>
-          <li><code>Object.keys()</code> is a simple way to enumerate object properties.</li>
-          <li><code>Function.bind()</code> is a cleaner way of capturing <code>this</code></li>
+          <li><code class="javascript">'use strict';</code> (backed up with <code>jshint</code> or <code>jslint</code>)</li>
+          <li>Array builtins like <code>forEach</code>, <code>map</code>, and <code>reduce</code></li>
+          <li><code class="javascript">Object.keys()</code> is a simple way to enumerate object properties</li>
+          <li><code class="javascript">Function.bind()</code> is a cleaner way of capturing <code class="javascript">this</code></li>
         </ul>
-
-        <p><i>remember: ES6 is not real yet</i></p>
       </section>
-    </section>
 
-    <section>
       <section>
         <h2>building up:</h2>
         <h3>metaprogramming vs monkeypatching</h3>
-      </section>
 
-      <section>
-        <h2>Don't try to metaprogram in JavaScript</h2>
+        <h4>Don't try to metaprogram in JavaScript</h4>
 
         <ul>
-          <li>Magic is bad.</li>
-          <li>Magic is super fun.</li>
-          <li>Metaprogramming is magic.</li>
-          <li class="fragment"><strike>Therefore, metaprogramming is super
-          fun.</strike></li>
-          <li class="fragment">Therefore, metaprogramming is bad.</li>
+          <li>Magic is bad. Magic is super fun. Metaprogramming is magic.</li>
+          <li class="fragment"><strike>&#8756; Metaprogramming is super fun.</strike></li>
+          <li class="fragment"> &#8756; Metaprogramming is bad.</li>
         </ul>
-      </section>
 
-      <section>
-        <h2>How not to metaprogram in JavaScript</h2>
-
-        <ul>
-          <li>Leave req and res alone: prefer composition to extension.</li>
-          <li><code>Object.defineProperty()</code> and friends can be
-          confusing and slow.</li>
+        <ul class="fragment">
+          <li>Leave <code>req</code> and <code>res</code> alone: prefer composition to extension.</li>
+          <li><code>Object.defineProperty()</code> and friends can be confusing and slow.</li>
           <li>Don't control flow via function arity.</li>
         </ul>
 
@@ -240,9 +236,11 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
           breaking on new releases or when using others' modules.</p>
         </aside>
       </section>
+    </section>
 
+    <section>
       <section>
-        <h1>Monkeypatching</h1>
+        <h2>building up: monkeypatching</h2>
 
         <pre><code class="javascript" data-trim>
 var http = require('http');
@@ -255,7 +253,7 @@ http.request = function () {
       </section>
 
       <section>
-        <h2>Monkeypatch safely</h2>
+        <h3>Monkeypatch safely</h3>
 
         <p>Fail via early return rather than throwing:</p>
         <pre><code class="javascript" data-trim>
@@ -267,7 +265,7 @@ function wrap(nodule, name, wrapper) {
       </section>
 
       <section>
-        <h2>Monkeypatch safely</h2>
+        <h3>Monkeypatch safely</h3>
 
         <p>Log everything:</p>
         <pre><code class="javascript" data-trim>
@@ -288,7 +286,7 @@ function wrap(nodule, name, wrapper) {
       </section>
 
       <section>
-        <h2>Monkeypatch safely</h2>
+        <h3>Monkeypatch safely</h3>
 
         <p>Leave visible traces:</p>
         <pre><code class="javascript" data-trim>
@@ -303,7 +301,7 @@ function wrap(nodule, name, wrapper) {
       </section>
 
       <section>
-        <h2>Monkeypatch safely</h2>
+        <h3>Monkeypatch safely</h3>
 
         <p>Wrap and unwrap idempotently:</p>
         <pre><code class="javascript" data-trim>
@@ -328,7 +326,7 @@ function unwrap(method) {
       </section>
 
       <section>
-        <h2>Monkeypatch safely</h2>
+        <h3>Monkeypatch safely</h3>
 
         <p>Always return the results of wrapped calls:</p>
         <pre><code class="javascript" data-trim>
@@ -352,53 +350,35 @@ function wrapper(original) {
         <h2>building up:</h2>
         <h3>handle errors one way</h3>
 
+        <p>Domains are fast and simple. I like them.</p>
+
         <ul>
-          <li>Domains are imperative and optimized in Node. I like them.</li>
+          <li>allow you to layer error handling</li>
+          <li><code>domain.bind()</code> and <code>domain.intercept()</code> allow you to unify error handling behind domains</li>
         </ul>
       </section>
 
       <section>
-        <h2>your friends, domains</h2>
+        <h2>building up:</h2>
+        <h3>use one strategy for control flow</h3>
 
-        <p><small>A whole other topic: <a href="http://is.gd/domainion">http://is.gd/domainion</a>.</small></p>
-
-        <ul>
-          <li>allow you to layer error handling</li>
-          <li><code>domain.bind()</code> and <code>domain.intercept()</code> allow
-          you to pull all error handling into domains</li>
-          <li>Domains can be used for problems aside from error-handling...</li>
-          <li class="fragment">...but that's not what they're good at.</li>
-        </ul>
+        <p>raw events / streams, <code>async</code>, a promises library, TameJS,
+        <code>streamline</code>, fibers, monads, <code>reducers</code>, Iced
+        CoffeeScript, something you wrote yourself...</p>
+        <p><i>...just pick one per project and stick with it.</i></p>
+        <p class="fragment">also, can we please stop arguing about this now?</p>
       </section>
     </section>
 
     <section>
-      <h2>building up:</h2>
-      <h3>use one strategy for control flow</h3>
+      <h3>Questions &amp; conclusions</h3>
 
-      <p>raw events / streams, <code>async</code>, a promises library, TameJS,
-      <code>streamline</code>, fibers, monads, <code>reducers</code>, Iced
-      CoffeeScript, something you wrote yourself...</p>
-      <p><i>...just pick one per project and stick with it.</i></p>
-      <p class="fragment">also, can we please stop arguing about this now?</p>
-    </section>
-
-    <section>
-      <h3>In conclusion</h3>
-
-      <p>Keep it simple, keep it safe.</p>
+      <p>Thanks for listening.</p>
       <p>&nbsp;</p>
-      <img width=476
-           height=142
-           src="http://25.media.tumblr.com/tumblr_m87bsc0tU61r9onvzo2_r1_500.gif"
-           alt="Gandalf says keep it safe"/>
-      <p>&nbsp;</p>
-      <p><a href="http://is.gd/domainion">http://is.gd/domainion</a></p>
       <p><a href="http://twitter.com/othiym23">http://twitter.com/othiym23</a> /
          <a href="http://github.com/othiym23">http://github.com/othiym23</a></p>
-      <p><a href="http://npmjs.org/package/newrelic">http://npmjs.org/package/newrelic</a></p>
       <p><a href="http://newrelic.com/">http://newrelic.com/</a> <small>(we're <a href="https://newrelic.com/about/jobs">hiring</a>)</small></p>
-      <p><big><a href="http://is.gd/nodepdx2013">http://is.gd/nodepdx2013</a></big></p>
+      <p><big><a href="http://is.gd/serverside_2013_06">http://is.gd/serverside_2013_06</a></big></p>
     </section>
   </div>
 </div>
