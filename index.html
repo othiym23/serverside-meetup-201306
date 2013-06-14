@@ -65,12 +65,18 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
 
     <section>
       <h1>THE GOAL:</h1>
-      <h3>Solve bigger problems with Node.</h3>
+      <h2>Solve other Node developers' problems with Node</h2>
+
+      <aside class="notes">
+        Whether you're working with Node itself or writing tools, you face special
+        problems when you're working with Node itself.
+      </aside>
     </section>
 
     <section>
       <section>
-        <h1>THE PROBLEM: COMPLEXITY IS YOUR ENEMY</h1>
+        <h1>THE PROBLEM:</h1>
+        <h2>Complexity is your enemy</h2>
 
         <aside class="notes">
           JavaScript's mongrel pedigree fosters complexity and cleverness to deal with
@@ -79,50 +85,40 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
       </section>
 
       <section>
-        <h2>COMPLEXITY:</h2>
-        <h3>JavaScript is neither FP nor OO. It's kind of both.</h3>
+        <h3>JavaScript is neither FP nor OO</h3>
+        <h4>It's kinda both</h4>
 
         <ul>
-          <li>It is <i>possible</i> to use fundamental functional programming
-          techniques in JavaScript.</li>
-          <li>It is <i>possible</i> to use inheritance and simulate classes in
-          JavaScript.</li>
+          <li>It is <i>possible</i> to use fundamental functional programming techniques in JavaScript.</li>
+          <li>It is <i>possible</i> to use inheritance and simulate classes in JavaScript.</li>
           <li>It's often <i>better</i> to write imperative, procedural code.
         </ul>
 
         <p>&nbsp;</p>
 
         <p><i>In JavaScript, clarity and effectiveness are always in tension.</i></p>
-
-        <aside class="notes">
-          1. monads and lenses
-          2. CoffeeScript provides a simulation of classes as transpiled sugar.
-        </aside>
       </section>
 
       <section>
-        <h2>COMPLEXITY:</h2>
-        <h3>V8 is neither an interpreter nor a compiler. It's kind of both.</h3>
+        <h3>V8 is neither an interpreter nor a compiler</h3>
+        <h4>It's kinda both</h4>
 
         <ul>
-          <li>JavaScript, being dynamic, has no type system safety net.</li>
-          <li>Closures can prevent JIT optimization.</li>
-          <li><a href="http://mrale.ph/">Slava Egorov</a> (http://mrale.ph) and
-          <a href="http://wingolog.org">Andy Wingo</a> (http://wingolog.org) can
-          demystify the black box that is V8's JIT.</li>
+          <li>Sometimes interpreted, sometimes compiled by the JIT.</li>
+          <li>Unpredictable factors, like closures, can affect the JIT.</li>
+          <li><a href="http://mrale.ph/">Slava Egorov</a> (http://mrale.ph) and <a href="http://wingolog.org">Andy Wingo</a> (http://wingolog.org) <i>can</i> demystify the JIT, with patience.</li>
         </ul>
       </section>
 
       <section>
-        <h2>COMPLEXITY:</h2>
-        <h3>Writing tooling is a special challenge</h3>
+        <h3>Tools are neither modules nor applications</h3>
+        <h4>They're kinda both</h4>
 
         <ul>
           <li>Absolutely can't break anything.</li>
           <li>Almost as importantly, can't <i>change</i> anything.</li>
           <li>Needs to be as simple as possible without compromising performance.</li>
-          <li>Lots of great tools and modules that app developers can use aren't available
-          to developers writing instrumentation.</li>
+          <li>Lots of great tools and modules that application developers can use aren't available to developers writing in Node core.</li>
         </ul>
       </section>
     </section>
@@ -141,15 +137,20 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
         JavaScript. As with any language, fluency means you need to *think* and
         *design* in JavaScript. Let go of Ruby, C, Java -- whatever. Stop
         mentally translating from other languages into JavaScript. Your
-        productivity is valuable, but evaluate productivity over months instead
-        of days.</p>
+        productivity is valuable, but take a longer view.</p>
       </aside>
     </section>
 
     <section>
       <section>
-        <h2>digging down:</h2>
-        <h3>think less, measure more</h3>
+        <h2>Evidence vs intuition</h2>
+        <h3>4 shortcuts for ending arguments (with yourself and others)</h3>
+
+        <p>The hardest part is recognizing when you need to kick free and look at what's going on.</p>
+      </section>
+
+      <section>
+        <h3>1. think less, measure more</h3>
 
         <pre><code class="javascript" data-trim>
 function verify(input, nonce) {
@@ -159,88 +160,110 @@ function verify(input, nonce) {
         </code></pre>
 
         <ul>
+          <li>Unless you're Mr. Aleph, you're not smarter than the JIT.</li>
           <li>Don't measure abstractions: measure for <i>your</i> problem under <i>your</i> workload.</li>
           <li>Node's source includes a pretty good framework for benchmarking.</li>
         </ul>
       </section>
 
       <section>
-        <h2>digging down:</h2>
-        <h3>refer to the source</h3>
+        <h3>2. refer to the source</h3>
 
         <ul>
           <li>Spend some time with <code>src/node.js</code>, <code>src/node.cc</code>, and <code>lib/*</code>.
-          <li><i>Don't</i> use Node's source as a model. Tuned for performance, not for simplicity.</li>
+          <li>Don't be afraid of <code>deps/*</code> (except maybe openssl).</li>
+          <li><i>Don't</i> use Node's JavaScript source as a model for anything except working on Node.</li>
         </ul>
       </section>
 
       <section>
-        <h2>digging down:</h2>
-        <h3>node debug vs console.log()</h3>
+        <h3>3. node's debugger really isn't that scary</h3>
 
         <ul>
-          <li><code>node debug</code> or <code>node-inspector</code></li>
-          <li><code>node debug</code> is harder to learn but faster to use.</li>
+          <li>logging is valuable, but in the debugger you have context.</li>
+          <li><code>node debug</code> is faster to use, but <code>node-inspector</code> is easier to learn.</li>
+          <li><code>debugger;</code> is the fastest way to set breakpoints.</li>
           <li><code>kill -USR1 &lt;pid&gt; &amp;&amp; node debug localhost:5858</code></li>
+        </ul>
+
+        <aside class="notes">
+          <p>Same goes for DTrace and mdb, but that's another story.</p>
+        </aside>
+      </section>
+
+      <section>
+        <h3>4. log everything</h3>
+
+        <ul>
+          <li>By the time you know something went wrong, it's often too late to capture.</li>
+          <li>I use <code>bunyan</code>, others prefer <code>winston</code>, but even <code>console.log()</code> + redirection is better than nothing.</li>
         </ul>
       </section>
     </section>
 
     <section>
       <section>
-        <h2>building up:</h2>
+        <h2>Designing durable applications in Node.</h2>
         <h3>use Node's core abstractions</h3>
 
         <ul>
-          <li>EventEmitters</li>
-          <li>streams -- <code>in.pipe(out)</code> if nothing else</li>
           <li>modules</li>
+          <li>EventEmitters</li>
+          <li>streams</li>
         </ul>
       </section>
 
       <section>
-        <h2>building up:</h2>
         <h3>use the whole ES5 toolbox</h3>
 
         <ul>
           <li><code class="javascript">'use strict';</code> (backed up with <code>jshint</code> or <code>jslint</code>)</li>
-          <li>Array builtins like <code>forEach</code>, <code>map</code>, and <code>reduce</code></li>
+          <li>Array builtins like <code>forEach()</code>, <code>map()</code>, and <code>reduce()</code></li>
           <li><code class="javascript">Object.keys()</code> is a simple way to enumerate object properties</li>
           <li><code class="javascript">Function.bind()</code> is a cleaner way of capturing <code class="javascript">this</code></li>
         </ul>
+
+        <aside class="notes">
+          <p>Functional techniques aren't always faster than purely imperative code, but they're easier to read and remember.</p>
+        </aside>
       </section>
 
       <section>
-        <h2>building up:</h2>
         <h3>metaprogramming vs monkeypatching</h3>
 
         <h4>Don't try to metaprogram in JavaScript</h4>
 
         <ul>
-          <li>Magic is bad. Magic is super fun. Metaprogramming is magic.</li>
+          <li>Magic is bad.</li>
+          <li>Magic is super fun.</li>
+          <li>Metaprogramming is magic.</li>
           <li class="fragment"><strike>&#8756; Metaprogramming is super fun.</strike></li>
           <li class="fragment"> &#8756; Metaprogramming is bad.</li>
         </ul>
+      </section>
 
-        <ul class="fragment">
+      <section>
+        <h3>seriously, metaprogramming is bad news</h3>
+
+        <ul>
           <li>Leave <code>req</code> and <code>res</code> alone: prefer composition to extension.</li>
           <li><code>Object.defineProperty()</code> and friends can be confusing and slow.</li>
           <li>Don't control flow via function arity.</li>
         </ul>
 
         <aside class="notes">
+          <p>modifying the behavior of built-in objects increases the risk of
+          breaking on new releases or when using others' modules.</p>
           <p>JavaScript doesn't have method overriding or multimethod dispatch,
           and simulating that by dispatching on the number of parameters is
           surprising and difficult to monkeypatch correctly.</p>
-          <p>modifying the behavior of built-in objects increases the risk of
-          breaking on new releases or when using others' modules.</p>
         </aside>
       </section>
     </section>
 
     <section>
       <section>
-        <h2>building up: monkeypatching</h2>
+        <h2>monkeypatching</h2>
 
         <pre><code class="javascript" data-trim>
 var http = require('http');
@@ -347,7 +370,6 @@ function wrapper(original) {
 
     <section>
       <section>
-        <h2>building up:</h2>
         <h3>handle errors one way</h3>
 
         <p>Domains are fast and simple. I like them.</p>
@@ -359,7 +381,6 @@ function wrapper(original) {
       </section>
 
       <section>
-        <h2>building up:</h2>
         <h3>use one strategy for control flow</h3>
 
         <p>raw events / streams, <code>async</code>, a promises library, TameJS,
