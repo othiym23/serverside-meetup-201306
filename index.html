@@ -26,17 +26,14 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
 </script>
 
 <!--[if lt IE 9]>
-                <script src="lib/js/html5shiv.js"></script>
-                <![endif]-->
+<script src="lib/js/html5shiv.js"></script>
+<![endif]-->
 </head>
 
 <body>
 
 <div class="reveal">
-
-  <!-- Any section element inside of this container is displayed as a slide -->
   <div class="slides">
-
     <section>
       <h1>Working close to the metal</h1>
       <h3>writing durable code with Node.js</h3>
@@ -46,7 +43,7 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
     </section>
 
     <section>
-      <h2>Who / What / Why</h2>
+      <h2>Who / What</h2>
 
       <p>Spent the last year writing a Node.js language agent for New Relic.</p>
 
@@ -54,13 +51,7 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
 
       <p class="fragment">You gotta be crafty to write fast,
       maintainable JavaScript. Getting good at it is more about attitude
-      than specific techniques, but here's some of both.</p>
-
-      <p>&nbsp;</p>
-
-      <p class="fragment">Node lets you make a lot with a little, and
-      JavaScript can be neat, but both require a bit of a balancing act
-      if you care about writing fast, durable software.</p>
+      than specific techniques. Here's some of both!</p>
     </section>
 
     <section>
@@ -85,13 +76,13 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
       </section>
 
       <section>
-        <h3>JavaScript is neither FP nor OO</h3>
+        <h3>JavaScript is neither purely functional nor object-oriented</h3>
         <h4>It's kinda both</h4>
 
         <ul>
           <li>It is <i>possible</i> to use fundamental functional programming techniques in JavaScript.</li>
           <li>It is <i>possible</i> to use inheritance and simulate classes in JavaScript.</li>
-          <li>It's often <i>better</i> to write imperative, procedural code.
+          <li>It's often <i>better</i> to write imperative, procedural code.</li>
         </ul>
 
         <p>&nbsp;</p>
@@ -204,6 +195,9 @@ function verify(input, nonce) {
     <section>
       <section>
         <h2>Designing durable applications in Node.</h2>
+      </section>
+
+      <section>
         <h3>use Node's core abstractions</h3>
 
         <ul>
